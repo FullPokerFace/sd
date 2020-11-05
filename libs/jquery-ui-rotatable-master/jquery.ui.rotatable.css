@@ -1,0 +1,11 @@
+.ui-rotatable-handle {
+  height: 25px;
+  width: 21px;
+  cursor: pointer;
+  background-image: url(rotateLayer.svg);
+  background-size: 100%;
+  right: -70px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}

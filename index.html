@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <!-- Rotatable CSS -->
+    <link
+    href="./libs/jquery-ui-rotatable-master/jquery.ui.rotatable.css"
+    rel="stylesheet"
+  />
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- JQuery Rotatable -->
+    <script src="./libs/jquery-ui-rotatable-master/jquery.ui.rotatable.js"></script>
+    <!-- Movable -->
+    <script src="//daybrush.com/moveable/release/latest/dist/moveable.min.js"></script>
+    <!-- Color Picker Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+
+
+    <!-- PDF js to load pdf files -->
+    <script
+    src="https://rawgithub.com/mozilla/pdf.js/gh-pages/build/pdf.js"
+    type="text/javascript"
+  ></script>
+  <!-- Facebook API -->
+  <script async defer src="https://connect.facebook.net/en_US/sdk.js" crossorigin="anonymous"></script>
+  <!-- QR Drawing API - Kjua -->
+  <!-- <script src="./libs/kjua-0.6.0/kjua-0.6.0.min.js"></script> -->
+  <script src="./libs/kjua-master/kjua.min.js"></script>
+  <!-- Script for printing -->
+  <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<!-- HTML 2 Canvas -->
+<script src="./libs/html2canvas/html2canvas.min.js"></script>
+<!-- DOM-TO-IMAGE Js -->
+<script src="./libs/dom-to-image/dom-to-image.js"></script>
+<!-- SORTABLE -->
+<script src="./libs/html5sortable/docs/html5sortable.js"></script>
+
+
+<!-- VEX dialog windows -->
+<script src="./libs/vex/js/vex.combined.min.js"></script>
+<script>vex.defaultOptions.className = 'vex-theme-default'</script>
+<link rel="stylesheet" href="./libs/vex/css/vex.css" />
+<link rel="stylesheet" href="./libs/vex/css/vex-theme-default.css" />
+
+    <!-- CSS only -->
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> -->
+
+<!-- JS, Popper.js, and jQuery -->
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> -->
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script> -->
+  <!-- Javascript Dialog Library -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script> -->
+  <!-- Main Script -->
+    <script src="ui-interactions.js" type="module" defer></script>
+
+    <!--Stylesheet-->  
+    <link href="styles.css" rel="stylesheet" />
+    <title>Sign Designer</title>
+  </head>
+  <body>
+
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId            : '867637007090264',
+          autoLogAppEvents : true,
+          xfbml            : true,
+          version          : 'v7.0'
+        });
+      };
+    </script>
+    
+
+
+
+    <div class="containerMain">
+      <div class="topMenu">
+        <div class="logo">
+          Sign Designer
+        </div>
+        <div class="alignmentTools">
+          <ul>
+            <li id='undoButton'>
+              <img src=  "./assets/topMenuTools/undo.svg" alt="" />
+            </li>
+            <li id='redoButton'>
+              <img src="./assets/topMenuTools/redo.svg" alt="" />
+            </li>
+
+            <li></li>
+
+            <li id='alignRightButton'>
+              <img src="./assets/topMenuTools/alignRight.svg" alt="" />
+            </li>
+            <li id='alignBottomButton'>
+              <img src="./assets/topMenuTools/alignBottom.svg" alt="" />
+            </li>
+            <li id='alignLeftButton'>
+              <img src="./assets/topMenuTools/alignLeft.svg" alt="" />
+            </li>
+            <li id='alignTopButton'>
+              <img src="./assets/topMenuTools/alignTop.svg" alt="" />
+            </li>
+            <li id='alignCenterButton'>
+              <img src="./assets/topMenuTools/alignCenter.svg" alt="" />
+            </li>
+            <li id='fitToPageButton'>
+              <img src="./assets/topMenuTools/alignCenter.svg" style='filter: invert(50%)' alt="" />
+            </li>
+
+
+            <li></li>
+            <li id='duplicateLayerButton'>
+              <img src="./assets/topMenuTools/duplicate.svg" alt="" />
+            </li>
+            <li id='flipHorizontalButton'>
+              <img src="./assets/topMenuTools/flipVertical.svg" alt="" />
+            </li>
+            <li id='flipVerticalButton'>
+              <img src="./assets/topMenuTools/flipHorizontal.svg" alt="" />
+            </li>
+
+
+            <li id='showLayersButton'>
+              L
+            </li>
+
+            <li id='showHistoryButton'>
+              H
+            </li>
+
+            <li id='testButton'>
+              T
+            </li>
+
+            
+          </ul>
+        </div>
+        <div class="shareSavePrint">
+          <ul>
+            <li id='shareOnFacebookButton'>
+              <img src="./assets/topMenuTools/shareOnFacebook.svg" alt="" />
+            </li>
+            <li id='printButton'>
+              <img src="./assets/topMenuTools/print.svg" alt="" />
+            </li>
+            <li id='downloadButton' ><img src="./assets/topMenuTools/download.svg" alt="" /></li>
+          </ul>
+        </div>
+      </div>
+      <div class="flexBoxContainer">
+        <div class="tools">
+          <ul>
+            <li class="tool" id="addText">
+              <img src="./assets/tools/addText.svg" alt="" />
+            </li>
+            <li class="tool" id="addImage">
+              <img src="./assets/tools/addImage.svg" alt="" />
+            </li>
+            <li class="tool" id="addQR">
+              <img src="./assets/tools/addQr.svg" alt="" />            </li>
+            <li class="tool" id="addShape">
+              <img src="./assets/tools/addShape.svg" alt="" />
+            </li>
+
+            <li class="tool" id="addTemplate">
+              <img src="./assets/tools/addTemplate.svg" alt="" />
+            </li>
+          </ul>
+        </div>
+        <div class=" toolsOptionsWrapper dialogueWindow toolsOption">
+          <!-- Add Text Options -->
+          <div class="collection addText" id="addTextCollection">
+            <!-- <div class="closeTab">x</div> -->
+            <div style="display: flex; flex-wrap: wrap;">
+              <span class="collectionTab" id="textTab">Add Text</span>
+            </div>
+            <div id="fontContainer">
+            <ul id='fontList'>
+
+            </ul>
+          </div>
+          </div>
+
+          <!-- Add Image Options -->
+          <div class="collection addImage" id="addImageCollection">
+            <!-- <div class="closeTab">x</div> -->
+            <div style="display: flex; flex-wrap: wrap;">
+              <span class="collectionTab" id="galleryTab">Gallery</span>
+              <span class="collectionTab" id="uploadTab">Upload</span>
+              <span class="collectionTab" id="facebookTab">Facebook</span>
+            </div>
+            <div
+              id="galleryTabContent"
+              class="tabContent"
+              style="margin: 0; padding: 0;"
+            >
+              <p><input type="text" class="collectionSearchInput" id="unsplashSearchInput" /></p>
+              <p>Powered by Unsplash</p>
+              <ul id='unsplashImageContainer'>
+              </ul>
+            </div>
+
+            <div
+              id="uploadTabContent"
+              class="tabContent"
+              style="margin: 0; padding: 0;"
+            >
+              <p>
+                <label for="imageUpload" class="imageUpload">
+                  <img src="./assets/tools/uploadImage.svg" alt="" />
+                  <input type="file" id="imageUpload" class="fileUploadImage" />
+                </label>
+              </p>
+              <ul id='uploadImageContainer'>
+       
+                
+              </ul>
+            </div>
+
+            <div
+              id="facebookTabContent"
+              class="tabContent"
+              style="margin: 0; padding: 0;"
+            >
+              <p>
+                <input
+                id = 'loadFacebookImages'
+                  type="button"
+                  class="collectionSearchInput"
+                  value="Load Images"
+                />
+                <input
+                id = 'facebookLogout'
+                  type="button"
+                  class="collectionSearchInput"
+                  value="Log Out"
+                />
+                <input
+                id = 'facebookLoadMore'
+                  type="button"
+                  class="collectionSearchInput"
+                  value="Load More"
+                />
+
+              </p>
+              <ul id = "facebookImageContainer">
+ 
+              </ul>
+            </div>
+          </div>
+
+          <!-- Add QR Options -->
+          <div class="collection addQR" id="addQRCollection">
+            <!-- <div class="closeTab">x</div> -->
+            <div style="display: flex; flex-wrap: wrap;">
+              <span class="collectionTab" id="QRTab">Add QR</span>
+            </div>
+            <p>
+              <textarea
+                class="inputTextArea"
+                cols="20"
+                id="QRCodeContentInput"
+                name=""
+                placeholder="Qr-Code Content"
+                rows="8"
+              >HighSky</textarea>
+
+              <button class="inputButton" id='addQrButton'>Add Qr-Code</button>
+            </p>
+          </div>
+
+          <!-- Add Shape Options -->
+          <div class="collection addImage" id="addShapeCollection">
+            <!-- <div class="closeTab">x</div> -->
+            <div style="display: flex; flex-wrap: wrap;">
+              <span class="collectionTab active" id="shapeTab">Add Shapes</span>
+            </div>
+            <div
+              id="shapeTabContent"
+              class="tabContent"
+              style="margin: 0; padding: 0;"
+            >
+              <p><input type="text" class="collectionSearchInput" id='flatIconSearchInput'/></p>
+     
+              <p>Powered by FlatIcon</p>
+              <ul id='flaticonImageContainer'>
+          
+              </ul>
+            </div>
+          </div>
+
+          <!-- Add Template Options -->
+          <div class="collection addImage" id="addTemplateCollection">
+            <!-- <div class="closeTab">x</div> -->
+            <div style="display: flex; flex-wrap: wrap;">
+              <span class="collectionTab" id="templateTab">Add Template</span>
+            </div>
+            <div
+              id="templateTabContent"
+              class="tabContent"
+              style="margin: 0; padding: 0;"
+            >
+              <p><input type="text" class="collectionSearchInput" id="templateTagsInput"/></p>
+              <p>
+                <button class="inputButton" id="saveTemplateButton">Save Template</button>
+
+            </p>
+              <ul id='templateContainer'>
+  
+              </ul>
+            </div>
+          </div>
+
+          <!-- End Tools -->
+        </div>
+        <div class="drawingArea">
+          
+          <div class="heightWidthSliders dialogueWindow">
+            <p>
+              Width: <span class="dialogueWidthLabel">600</span>
+              <input
+                type="range"
+                min="1"
+                max="2000"
+                value="500"
+                class="slider"
+                id="canvasWidthRange"
+              />
+
+            </p>
+            <p>
+              Height: <span class="dialogueHeightLabel">600</span>
+              <input
+                type="range"
+                min="1"
+                max="2000"
+                value="500"
+                class="slider"
+                id="canvasHeightRange"
+              />
+            </p>
+
+          </div>
+          <ul class='bg-tools'>
+            <li>
+              <label for="canvasWidthInput">Width</label>
+
+              <input
+                class="transparentInput"
+                id="canvasWidthInput"
+                style="width: 30px;"
+                type="text"
+                value="800"
+                min="1"
+              />
+            </li>
+            <li>
+              <label for="canvasHeightInput">Height</label>
+
+              <input
+                class="transparentInput"
+                id="canvasHeightInput"
+                style="width: 30px;"
+                type="text"
+                value="150"
+              />
+            </li>
+            <li>
+              <span class="colorPicker" id="bgFillPickerSwatch">
+                <div class="popUpOptionsWrapper dialogueWindow">
+                  <div class="popUpOptions" id="bgFillPicker"></div>
+                </div>
+              </span>
+            </li>
+            <li>
+              <input
+                class="transparentInput"
+                id="canvasColorInput"
+                style="width: 60px;"
+                type="text"
+                value="#FFFFFF"
+              />
+            </li>
+            <li id="swatchContainer"></li>
+          </ul>
+          <div class="drawingAreaContainer">
+            
+
+            <div class='mainCanvasBorder'></div>
+            <div class="mainCanvasContainer" id='mainCanvasContainer'>
+   
+<!-- <div style="outline : solid 2px blue; display: flex;"> -->
+              <canvas height="350" id="mainCanvas" width="500" class="mainCanvas"></canvas>
+            <!-- </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="layerOptions">
+          <div class="section" id='layerListContainer'>
+            <span class="expand"></span>
+            <ul>
+              <li>
+                <span class="sectionSubTitle">
+                  Layers
+                </span>
+                <ul class="layerList" id='layerList'>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="section">
+            <span class="tabTitle selected">Options</span>
+          </div>
+          <div class="section hidden">
+            <span class="expand"></span>
+            <ul>
+              <li>
+                <span>
+                  <label for="xPos">xPos</label>
+
+                  <input
+                    class="transparentInput"
+                    id="xPos"
+                    type="text"
+                    value="150"
+                    size="4"
+                    maxlength="4"
+                /></span>
+                <span>
+                  <label for="yPos">yPos</label>
+                  <input
+                    class="transparentInput"
+                    id="yPos"
+                    type="text"
+                    value="150"
+                    size="4"
+                    maxlength="4"
+                  />
+                </span>
+              </li>
+              <li>
+                <span>
+                  <div
+                    class="optionRangeContainer dialogueWindow"
+                    id="layerWidthRangeContainer"
+                  >
+                    <input
+                      type="range"
+                      min="1"
+                      max="2000"
+                      value="200"
+                      class="sliderSm"
+                      id="layerWidthRange"
+                    />
+                  </div>
+                  <label for="layerWidthInput">Width</label>
+                  <input
+                    class="transparentInput"
+                    id="layerWidthInput"
+                    type="text"
+                    value="150"
+                    size="4"
+                    maxlength="4"
+                    readonly
+                /></span>
+
+                <span>
+                  <div
+                    class="optionRangeContainer dialogueWindow"
+                    id="layerHeightRangeContainer"
+                  >
+                    <input
+                      type="range"
+                      min="1"
+                      max="2000"
+                      value="200"
+                      class="sliderSm"
+                      id="layerHeightRange"
+                    />
+                  </div>
+                  <label for="layerHeightInput">Height</label>
+                  <input
+                    class="transparentInput"
+                    id="layerHeightInput"
+                    type="text"
+                    value="150"
+                    size="4"
+                    maxlength="4"
+                    readonly
+                /></span>
+              </li>
+            </ul>
+          </div>
+          <div class="section" id='fillColorSection'>
+            <span class="expand"></span>
+            <ul>
+              <li>
+                <span>
+                  Fill
+                </span>
+                <span>
+                  <div class="colorPicker" id="fillPickerSwatch">
+                    <div class="popUpOptionsWrapper dialogueWindow">
+                      <div class="popUpOptions" id="fillPicker"></div>
+                    </div>
+                  </div>
+                  <input
+                    class="transparentInput"
+                    id="fillColorInput"
+                    type="text"
+                    value="#FFFFFF"
+                    size="7"
+                    maxlength="7"
+                  />
+                </span>
+              </li>
+              <li>
+                <span class="layerFillSwatchContainer"> </span>
+              </li>
+            </ul>
+          </div>
+          <div class="section">
+            <span class="expand"></span>
+            <ul>
+              <li>
+                <span>
+                  <div
+                    class="optionRangeContainer dialogueWindow"
+                    id="layerStrokeSizeRangeContainer"
+                    style="right: 0px;"
+                  >
+                    <input
+                      type="range"
+                      min="0"
+                      max="99"
+                      value="0"
+                      class="sliderSm"
+                      id="layerStrokeSizeRange"
+                    />
+                  </div>
+                  Stroke
+                  <input
+                    class="transparentInput"
+                    id="strokeSizeInput"
+                    type="text"
+                    value="0"
+                    size="2"
+                    maxlength="2"
+                    readonly
+                  />
+                </span>
+                <span>
+                  <div class="colorPicker" id="strokePickerSwatch">
+                    <div class="popUpOptionsWrapper dialogueWindow">
+                      <div class="popUpOptions" id="strokePicker"></div>
+                    </div>
+                  </div>
+
+                  <input
+                    class="transparentInput"
+                    id="strokeColorInput"
+                    type="text"
+                    value="#FFFFFF"
+                    size="7"
+                    maxlength="7"
+                  />
+                </span>
+              </li>
+              <li>
+                <span class="layerStrokeSwatchContainer"> </span>
+              </li>
+            </ul>
+          </div>
+          <div class="section">
+            <span class="expand"></span>
+            <ul>
+              <li>
+                <span>
+                  Shadow
+                </span>
+                <span>
+                  <div class="colorPicker" id="shadowPickerSwatch">
+                    <div class="popUpOptionsWrapper dialogueWindow">
+                      <div class="popUpOptions" id="shadowPicker"></div>
+                    </div>
+                  </div>
+
+                  <input
+                    class="transparentInput"
+                    id="shadowColorInput"
+                    type="text"
+                    value="#FFFFFF"
+                    size="7"
+                    maxlength="7"
+                  />
+                </span>
+              </li>
+              <li>
+                <span>
+                  <div
+                    class="optionRangeContainer dialogueWindow"
+                    id="layerBlurSizeRangeContainer"
+                  >
+                    <input
+                      type="range"
+                      min="0"
+                      max="10"
+                      value="0"
+                      class="sliderSm"
+                      id="layerBlurSizeRange"
+                    />
+                  </div>
+                  <label for="shadowSize">Blur</label>
+                  <input
+                    class="transparentInput"
+                    id="layerBlurSizeInput"
+                    type="text"
+                    value="0"
+                    size="2"
+                    maxlength="2"
+                    readonly
+                  />
+                </span>
+                <span>
+                  <div
+                    class="optionRangeContainer dialogueWindow"
+                    id="layerShadowXRangeContainer"
+                  >
+                    <input
+                      type="range"
+                      min="0"
+                      max="10"
+                      value="0"
+                      class="sliderSm"
+                      id="layerShadowXRange"
+                    />
+                  </div>
+                  <label for="layerShadowXInput">X</label>
+                  <input
+                    class="transparentInput"
+                    id="layerShadowXInput"
+                    style="width: 15px;"
+                    type="text"
+                    value="0"
+                    size="2"
+                    maxlength="2"
+                    readonly
+                  />
+                  <div
+                    class="optionRangeContainer dialogueWindow"
+                    id="layerShadowYRangeContainer"
+                  >
+                    <input
+                      type="range"
+                      min="0"
+                      max="10"
+                      value="0"
+                      class="sliderSm"
+                      id="layerShadowYRange"
+                    />
+                  </div>
+                  <label for="layerShadowYInput">Y</label>
+                  <input
+                    class="transparentInput"
+                    id="layerShadowYInput"
+                    style="width: 15px;"
+                    type="text"
+                    value="0"
+                    size="2"
+                    maxlength="2"
+                    readonly
+                  />
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="sectionShrunk">
+            <span class="expand"></span>
+            <div
+              class="optionRangeContainer"
+              id="layerOpacityRangeContainer"
+              style="transform: translateX(80px); display: block;"
+            >
+              <input
+                type="range"
+                min="0"
+                max="10"
+                value="10"
+                class="sliderSm"
+                id="layerOpacityRange"
+              />
+            </div>
+            <label for="layerOpacityInput">Opacity</label>
+            <input
+              class="transparentInput"
+              id="layerOpacityInput"
+              type="text"
+              value="10"
+              size="2"
+              maxlength="2"
+              readonly
+            />
+          </div>
+          <div class="section" id='fontOptionsSection'>
+            <span class="expand"></span>
+            <ul>
+              <li>
+                <span>
+                  <textarea
+                  id = 'textContentInput'
+                    class="inputTextArea"
+                    cols="20"
+                    id=""
+                    name=""
+                    placeholder="Text"
+                    rows="3"
+                  ></textarea>
+                </span>
+                <span>
+
+
+                  <!-- <p>
+                    
+                    <img
+                      height="15px"
+                      src="./assets/textTools/fontSize.svg"
+                      alt=""
+                    />
+
+                    <input
+                      class="transparentInput"
+                      id="layerFontSizeInput"
+                      style="width: 20px;"
+                      type="text"
+                      value="60"
+                      size="3"
+                      maxlength="3"
+                      readonly
+                    />
+                    <div
+                    class="optionRangeContainer dialogueWindow"
+                    id="layerFontSizeContainer"
+
+                  >
+                    <input
+                   
+                      type="range"
+                      min="20"
+                      max="200"
+                      value="60"
+                      class="sliderSm"
+                      id="layerFontSizeRange"
+                      step = '1'
+                    />
+                  </div>
+                  </p> -->
+
+                  <p >
+                    <img
+                      height="15px"
+                      src="./assets/textTools/lineHeight.svg"
+                      alt=""
+                    />
+                    <input
+                    
+                      class="transparentInput"
+                      id="layerLineHeightSizeInput"
+                      style="width: 15px;"
+                      type="text"
+                      value="10"
+                      size="2"
+                      maxlength="2"
+                      readonly
+                    />
+                    <div
+                    class="optionRangeContainer dialogueWindow"
+                    id="layerLineHeightSizeContainer"
+
+                  >
+                    <input
+                      type="range"
+                      min="0"
+                      max="2.0"
+                      value="1.2"
+                      step="0.1"
+                      class="sliderSm"
+                      id="layerLineHeightSizeRange"
+                    />
+                  </div>
+                  </p>
+                  <select class="fontFamilySelect" id="fontFamilySelect">
+
+                  </select>
+                </span>
+
+                <span>
+                  <ul class="fontOptions">
+                    <li class="fontDecorationOptions" id='bold' data-property='bold'>
+                      <img src="./assets/textTools/makeBold.svg" alt="" />
+                    </li>
+                    <li  class="fontDecorationOptions" id='italic' data-property='italic'>
+                      <img src="./assets/textTools/makeItalic.svg" alt="" />
+                    </li>
+                    <li  class="fontDecorationOptions" id='crossline' data-property='line-through'>
+                      <img src="./assets/textTools/makeCrossed.svg" alt="" />
+                    </li>
+                    <li  class="fontDecorationOptions" id='underline' data-property='underline'>
+                      <img  src="./assets/textTools/makeUnderline.svg"/>
+                    </li>
+                    <li  class="textAlignment" id='leftAlign' data-property='left'>
+                      <img
+                        src="./assets/textTools/textLeftAlignment.svg"
+                        alt=""
+                      />
+                    </li>
+                    <li  class="textAlignment" id='centerAlign'  data-property='center'>
+                      <img
+                        src="./assets/textTools/textCenterAlignment.svg"
+                        alt=""
+                      />
+                    </li>
+                    <li  class="textAlignment" id='rightAlign'  data-property='right'>
+                      <img
+                        src="./assets/textTools/textRightAlignment.svg"
+                        alt=""
+                      />
+                    </li>
+                  </ul>
+                </span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="jquery.ui.rotatable.js"></script>
+    <link
+      href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="jquery.ui.rotatable.css" />
+
+    <style>
+      <style>
+      /* The CSS */
+
+      .layerResize {
+      }
+      #stretch {
+        position: absolute;
+        padding: 2px;
+      }
+
+      #canvas {
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stretch">
+      <canvas id="canvas" style="border: black 1px solid;"></canvas>
+    </div>
+    <div id="draggable3">
+      <div
+        id="target3"
+        style="
+          width: 250px;
+          border: 1px solid #862dde;
+          padding: 20px;
+          padding-right: 40px;
+        "
+      >
+        Drag me, resize me and rotate me!
+      </div>
+    </div>
+    <script>
+      $('#target3').resizable().rotatable();
+      $('#draggable3').draggable();
+      function draw() {
+        let canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var textLines = 'Thank*you*Thank you';
+        textLines = textLines.split('*');
+        const longestLine = textLines.reduce(function (a, b) {
+          return a.length > b.length ? a : b;
+        });
+
+        var divHeight = parseInt($('#stretch').css('height'));
+        var textHeight = divHeight / textLines.length;
+        textHeight = textHeight * 0.8;
+
+        ctx.font = textHeight + 'px serif';
+        var text = ctx.measureText(longestLine);
+        $('#stretch').css('width', text.width);
+        $('#stretch').css('height', divHeight);
+        $('#canvas').attr('width', text.width);
+        $('#canvas').attr('height', divHeight);
+
+        let i = 0;
+        textLines.forEach((line) => {
+          ctx.font = textHeight + 'px serif';
+          ctx.textBaseline = 'hanging';
+          ctx.fillText(line, 0, (textHeight + textHeight * 0.2) * i + 5);
+          i++;
+        });
+      }
+
+      ///
+      $('#stretch').resizable({
+        minHeight: 20,
+        autoHide: true,
+        handles: 'se',
+        classes: {
+          'ui-resizable-se': '',
+          'ui-resizable-resizing': 'layerResize',
+          'ui-resizable-handle': 'layerResize',
+        },
+      });
+      $('#stretch').draggable({});
+      $('#stretch').resize(function () {
+        draw();
+      });
+
+      $('#stretch').rotatable();
+      //draw();
+    </script>
+  </body>
+</html>
