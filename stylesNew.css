@@ -1,0 +1,21 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.vh100 {
+  height: 100vh;
+  background-color: rgb(233, 233, 233);
+}
+
+.rotate90 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+* {
+  outline: solid 1px rgb(182, 182, 182);
+}

@@ -410,22 +410,25 @@ redoButton.addEventListener('click', () => {
   cRedo();
 });
 
-document.getElementById('showLayersButton').addEventListener('click', () => {
-  console.log('Layers');
-  console.table(layers);
-});
-document.getElementById('showHistoryButton').addEventListener('click', () => {
-  console.log('History');
-  console.table(history);
-});
 
-document.getElementById('testButton').addEventListener('click', () => {
-  // const recoveredDesign = JSON.stringify(layers);
-  // localStorage.setItem('recoveredDesign', recoveredDesign);
-  // console.log(recoveredDesign);
-});
+//  DEBUGGING
 
-document.getElementById('testButton').addEventListener('dblclick', () => {
-  const visibleLayers = layers.filter((layer) => layer.isVisible === true);
-  console.log(visibleLayers.length != 0);
-});
+// document.getElementById('showLayersButton').addEventListener('click', () => {
+//   console.log('Layers');
+//   console.table(layers);
+// });
+// document.getElementById('showHistoryButton').addEventListener('click', () => {
+//   console.log('History');
+//   console.table(history);
+// });
+
+// document.getElementById('testButton').addEventListener('click', () => {
+//   // const recoveredDesign = JSON.stringify(layers);
+//   // localStorage.setItem('recoveredDesign', recoveredDesign);
+//   // console.log(recoveredDesign);
+// });
+
+// document.getElementById('testButton').addEventListener('dblclick', () => {
+//   const visibleLayers = layers.filter((layer) => layer.isVisible === true);
+//   console.log(visibleLayers.length != 0);
+// });

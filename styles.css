@@ -549,8 +549,8 @@
 }
 
 .layerOptions {
-  width: 225px;
-  min-width: 225px;
+  /* width: 225px; */
+  min-width: 100px;
   background-color: #f0f0f0;
   font-size: 12px;
   overflow: scroll;

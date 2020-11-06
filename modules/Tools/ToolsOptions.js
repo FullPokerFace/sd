@@ -71,19 +71,19 @@ closeTabs.forEach((closeTab) => {
 // document.getElementById('addShape').click();
 // document.getElementById('addShapeCollection').style.display = 'block';
 // document.getElementById('shapeTab').click();
-document.getElementById('flatIconSearchInput').value = 'flower';
-document
-  .getElementById('flatIconSearchInput')
-  .dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
+// document.getElementById('flatIconSearchInput').value = 'flower';
+// document
+//   .getElementById('flatIconSearchInput')
+//   .dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
 
 // Images;
 // document.getElementById('addImage').click();
 // document.getElementById('addImageCollection').style.display = 'block';
 // document.getElementById('galleryTab').click();
-document.getElementById('unsplashSearchInput').value = 'mountain';
-document
-  .getElementById('unsplashSearchInput')
-  .dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
+// document.getElementById('unsplashSearchInput').value = 'mountain';
+// document
+//   .getElementById('unsplashSearchInput')
+//   .dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
 
 //    Templates
 // document.getElementById('addTemplate').click();

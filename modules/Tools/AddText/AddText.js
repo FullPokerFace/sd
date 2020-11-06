@@ -19,7 +19,7 @@ fontsLink.rel = 'stylesheet';
 fontsLink.setAttribute('crossorigin', 'anonymous');
 
 export let fontPage = 0;
-let fontCount = 10;
+let fontCount = 100;
 let loadedFontsLink = '';
 
 // fontContainer.addEventListener('click', () => {
