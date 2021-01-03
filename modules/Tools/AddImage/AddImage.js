@@ -1,6 +1,6 @@
 import { makeId } from '../../../libs/makeId.js';
 import {
-  createLayer,
+
   drawCanvas,
   makeActive,
   fitToPage,
@@ -21,20 +21,23 @@ const imageUpload = document.getElementById('imageUpload');
 
 unsplashSearchInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
-    unsplashImageContainer.innerHTML = '';
+    unsplashImageContainer.querySelectorAll('div').forEach(div => {
+      div.innerHTML = '';
+    })
     unsplashPage = 1;
-    loadUnsplashImages(e.srcElement.value, unsplashPage);
+    loadUnsplashImages(e.target.value, unsplashPage);
   }
 });
 
 ///// Unsplash
 
 let unsplashPage = 1;
-const picturesPerPage = 20;
+const picturesPerPage = 10;
 let facebookAccessToken = null;
 let facebookImagesURLS = [];
 let facebookPhotoPage = 1;
 let libraryImageUrls = [];
+let isLoading = false;
 
 const loadUnsplashImages = (query, page) => {
   const url = 'get_unsplash_images.php';
@@ -52,34 +55,33 @@ const loadUnsplashImages = (query, page) => {
     })
     .then(function (response) {
       const data = JSON.parse(response);
-
       data.map((image) => {
-        const source = image.urls.regular;
+        const source = image.urls.small;
         const imageName = image.id;
         const img = new Image();
         img.onload = function () {
           loadImage(source, `${imageName}.jpg`, unsplashImageContainer);
         };
         img.src = source;
+
       });
+
+      isLoading = false;
     });
 };
 
 //Facebook
 
-document.getElementById('facebookLogout').addEventListener('click', () => {
-  console.log('Log out');
-  FB.logout(function (response) {
-    console.log(response);
-    facebookAccessToken = null;
-    console.log('Facebook log out');
-  });
-});
-
-// document.getElementById('facebookLoadMore').addEventListener('click', () => {
-//   facebookPhotoPage++;
-//   loadFBImage(facebookImagesURLS, facebookPhotoPage);
+// document.getElementById('facebookLogout').addEventListener('click', () => {
+//   console.log('Log out');
+//   FB.logout(function (response) {
+//     console.log(response);
+//     facebookAccessToken = null;
+//     console.log('Facebook log out');
+//   });
 // });
+
+
 
 document.getElementById('loadFacebookImages').addEventListener('click', () => {
   if (!facebookAccessToken) {
@@ -178,6 +180,7 @@ const loadFBImage = (images, page) => {
 const loadImage = (src, fileName, container, addToLibrary = true) => {
   const img = new Image();
   img.crossOrigin = 'anonymous';
+  img.className = "img-fluid p-2";
   img.onload = function () {
     let imgWidth = img.naturalWidth;
     let imgHeight = img.naturalHeight;
@@ -194,10 +197,11 @@ const loadImage = (src, fileName, container, addToLibrary = true) => {
       );
     });
     //img.click();
-    const li = document.createElement('LI');
-    li.appendChild(img);
-    container.appendChild(li);
+    const div = document.createElement('DIV');
+    div.appendChild(img);  
 
+    // Add Image to the smallest Column
+    smallestCol(container).appendChild(div);
     // If image is uploaded then add it to the canvas
     if (!addToLibrary) {
       addImage(
@@ -245,23 +249,28 @@ const addImage = (
     uploadContainerImage.addEventListener('click', (e) => {
       addImage(img, 'image', imgWidth, imgHeight, fileName, img.src, false);
     });
-    const li = document.createElement('LI');
-    li.appendChild(uploadContainerImage);
-    uploadImageContainer.appendChild(li);
+    const div = document.createElement('div');
+    div.appendChild(uploadContainerImage);
+    uploadImageContainer.appendChild(div);
   }
 };
 
 addImageCollection.addEventListener('scroll', () => {
   let divHeight = addImageCollection.scrollHeight;
+  
   let scrollBottom =
     addImageCollection.scrollTop + addImageCollection.offsetHeight;
 
-  if (scrollBottom - divHeight >= 0) {
-    const activeTabId = document.querySelector('.collectionTab.active').id;
-    if (activeTabId === 'galleryTab') {
+  if (scrollBottom - divHeight >= -200 && !isLoading) {
+    
+    const activeTabId = document.querySelector('.active-tab').id;
+
+    if (activeTabId === 'unsplash-nav-tab') {
       const unsplashSearchQuery = unsplashSearchInput.value;
       unsplashPage++;
+      console.log('Loading')
       loadUnsplashImages(unsplashSearchQuery, unsplashPage);
+      isLoading = true;
     }
     if (activeTabId === 'facebookTab') {
       facebookPhotoPage++;
@@ -283,3 +292,33 @@ imageUpload.addEventListener('change', (e) => {
     );
   }
 });
+
+
+const smallestCol = (container) => {
+  const cols = [ ...container.children];
+  return cols.reduce((firstCol, col) => {
+    return col.clientHeight < firstCol.clientHeight ? col : firstCol;
+  }, cols[0])
+}
+
+
+
+const searchRequestBtns = document.querySelectorAll('.searchRequestBtn');
+
+searchRequestBtns.forEach (btn => {
+  btn.addEventListener('click', ()=>{
+    const searchInput = btn.parentElement.querySelectorAll("input[type='text']")[0];
+    searchInput .value= btn.innerText;
+
+const keyboardEvent = new KeyboardEvent('keypress', {
+    code: 'Enter',
+    key: 'Enter',
+    charCode: 13,
+    keyCode: 13,
+    view: window,
+    bubbles: true
+});
+
+    searchInput.dispatchEvent(keyboardEvent);
+  })
+})

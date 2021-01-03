@@ -15,29 +15,29 @@ import { layers, CL } from './libs/canvas.js';
 
 import './modules/topMenu.js';
 
-//Tools
-import // tabs, tools
-'./modules/Tools/ToolsOptions.js';
+// //Tools
+import { tabs, tools} from './modules/Tools/ToolsOptions.js';
 
 import { rgb2hex } from './libs/rgbToHex.js';
 
 ////Globals
 const mainCanvasContainer = document.getElementById('mainCanvasContainer');
+const mainCanvasBorder = document.querySelector('.mainCanvasBorder');
 export const mainCanvas = document.getElementById('mainCanvas');
 export const drawingAreaContainer = document.querySelector(
   '.drawingAreaContainer'
 );
 export const drawingArea = document.querySelector('.drawingArea');
-const canvasWidthInput = document.querySelector('#canvasWidthInput');
-const canvasHeightInput = document.querySelector('#canvasHeightInput');
-const canvasWidthRange = document.getElementById('canvasWidthRange');
-const canvasHeightRange = document.getElementById('canvasHeightRange');
+const pageWidthLabel = document.querySelector('#pageWidthLabel');
+const pageHeightLabel = document.querySelector('#pageHeightLabel');
+const pageWidthRange = document.getElementById('pageWidthRange');
+const pageHeightRange = document.getElementById('pageHeightRange');
 const heightWidthSliders = document.querySelector('.heightWidthSliders');
 
 const colorPickers = document.querySelectorAll('.colorPicker');
 export const canvasColorInput = document.getElementById('canvasColorInput');
-export const bgFillPickerSwatch = document.getElementById('bgFillPickerSwatch');
-const swatchContainer = document.getElementById('swatchContainer');
+//export const bgFillPickerSwatch = document.getElementById('bgFillPickerSwatch');
+// const swatchContainer = document.getElementById('swatchContainer');
 
 const dialogueWindows = document.querySelectorAll('.dialogueWindow');
 
@@ -47,6 +47,30 @@ let initOptions = JSON;
 getInitOptions.then((data) => {
   initOptions = data;
 });
+
+
+// Prevent Boottstrap Dropdown Menus from closing
+const dropDowns = document.querySelectorAll('.dropdown-menu');
+dropDowns.forEach((dropDown)=>{
+  dropDown.addEventListener('click', (e)=>{
+    e.stopPropagation();
+  })
+})
+
+
+
+// Tab Navigation 
+const tabHeaders = document.querySelectorAll('.tab-header');
+tabHeaders.forEach((tabHeader)=>{
+    tabHeader.addEventListener('click', (e)=>{
+        document.querySelector('.active-tab-header').classList.remove('active-tab-header');
+        e.target.classList.add('active-tab-header');
+        document.querySelector(`.active-tab`).classList.remove('active-tab');
+        document.querySelector(`#${e.target.id}-tab`).classList.add('active-tab');
+    })
+})
+
+
 
 window.onbeforeunload = function (event) {
   const visibleLayers = layers.filter((layer) => layer.isVisible === true);
@@ -73,18 +97,39 @@ window.onbeforeunload = function (event) {
   }
 };
 
+
+
+
+var hammertime = new Hammer(window);
+hammertime.get('pinch').set({ enable: true });
+hammertime.on('pan', function(ev) {
+	console.log('pinch')
+});
+
+// Fix ViewHeight for Safari iOS
+const setVh = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+
+
+window.addEventListener('load', setVh);
+// window.addEventListener('resize', setVh);
+
+
+
 window.onload = () => {
   //
   getInitOptions.then((data) => {
-    data.swatchColors.map((color) => {
-      displaySwatches(swatchContainer, color, [
-        bgFillPickerSwatch,
-        canvasColorInput,
-        bgColorPicker,
-      ]);
+    // data.swatchColors.map((color) => {
+    //   displaySwatches(swatchContainer, color, [
+    //     bgFillPickerSwatch,
+    //     canvasColorInput,
+    //     bgColorPicker,
+    //   ]);
 
-      ////
-    });
+    //   ////
+    // });
     setSize(
       mainCanvas,
       parseFloat(initOptions.width),
@@ -94,7 +139,7 @@ window.onload = () => {
     setColorToElements(
       bgCanvasColor,
       mainCanvas,
-      bgFillPickerSwatch,
+      //bgFillPickerSwatch,
       canvasColorInput,
       bgColorPicker
     );
@@ -141,19 +186,19 @@ export const closeDialogues = () => {
 //ELEMENT BINDING
 //---------------
 
-canvasWidthRange.addEventListener('mousemove', () => {
-  canvasWidthInput.value = canvasWidthRange.value;
-  document.querySelector('.dialogueWidthLabel').innerHTML =
-    canvasWidthRange.value;
-  setSize(mainCanvas, canvasWidthInput.value, canvasHeightInput.value);
+pageWidthRange.addEventListener('input', () => {
+  pageWidthLabel.innerHTML = pageWidthRange.value;
+  // document.querySelector('.dialogueWidthLabel').innerHTML =
+  //   canvasWidthRange.value;
+  setSize(mainCanvas, pageWidthRange.value, pageHeightRange.value);
   setColor(mainCanvas, mainCanvasColor);
 });
 
-canvasHeightRange.addEventListener('mousemove', () => {
-  canvasHeightInput.value = canvasHeightRange.value;
-  document.querySelector('.dialogueHeightLabel').innerHTML =
-    canvasHeightRange.value;
-  setSize(mainCanvas, canvasWidthInput.value, canvasHeightInput.value);
+pageHeightRange.addEventListener('input', () => {
+  pageHeightLabel.innerHTML = pageHeightRange.value;
+  // document.querySelector('.dialogueHeightLabel').innerHTML =
+  //   canvasHeightRange.value;
+  setSize(mainCanvas, pageWidthRange.value, pageHeightRange.value);
   setColor(mainCanvas, mainCanvasColor);
 });
 
@@ -176,38 +221,39 @@ dialogueWindows.forEach((window) => {
   });
 });
 
-canvasWidthInput.addEventListener('click', (e) => {
-  closeDialogues();
-  heightWidthSliders.style.display = 'block';
-  e.stopPropagation();
-});
+// canvasWidthInput.addEventListener('click', (e) => {
+//   closeDialogues();
+//   heightWidthSliders.style.display = 'block';
+//   e.stopPropagation();
+// });
 
-canvasHeightInput.addEventListener('click', (e) => {
-  closeDialogues();
-  heightWidthSliders.style.display = 'block';
-  e.stopPropagation();
-});
+// canvasHeightInput.addEventListener('click', (e) => {
+//   closeDialogues();
+//   heightWidthSliders.style.display = 'block';
+//   e.stopPropagation();
+// });
 
-canvasWidthInput.addEventListener('change', () => {
-  setSize(mainCanvas, canvasWidthInput.value, canvasHeightInput.value);
-  setColor(mainCanvas, mainCanvasColor);
-});
+// canvasWidthInput.addEventListener('change', () => {
+//   setSize(mainCanvas, canvasWidthInput.value, canvasHeightInput.value);
+//   setColor(mainCanvas, mainCanvasColor);
+// });
 
-canvasHeightInput.addEventListener('change', () => {
-  setSize(mainCanvas, canvasWidthInput.value, canvasHeightInput.value);
-  setColor(mainCanvas, mainCanvasColor);
-});
+// canvasHeightInput.addEventListener('change', () => {
+//   setSize(mainCanvas, canvasWidthInput.value, canvasHeightInput.value);
+//   setColor(mainCanvas, mainCanvasColor);
+// });
 
 drawingAreaContainer.addEventListener('wheel', (e) => {
-  event.preventDefault();
+  e.preventDefault();
 
-  scale += event.deltaY * -0.001;
+  scale += e.deltaY * -0.001;
 
   // Restrict scale
   scale = Math.min(Math.max(0.1, scale), 1.9);
 
   // Apply scale transform
   drawingAreaContainer.style.transform = `scale(${scale})`;
+
   const target = moveable.target;
   moveable.target = null;
   moveable.target = target;
@@ -240,3 +286,4 @@ canvasColorInput.addEventListener('change', () => {
     bgColorPicker
   );
 });
+

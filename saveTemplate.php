@@ -4,8 +4,8 @@ if (!file_exists(UPLOAD_DIR)) {
     mkdir(UPLOAD_DIR, 0777, true);
 }
 $layerJSON = $_POST['layerJSON'];
-
 $fileName = $_POST['fileName'];
+
 $data = json_decode($layerJSON, true);
 $file = UPLOAD_DIR . $fileName . '.json';
 $success = file_put_contents($file, $layerJSON);

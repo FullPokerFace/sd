@@ -24,6 +24,7 @@ export const drawText = () => {
     shadowBlurSize,
     shadowOffsetX,
     shadowOffsetY,
+    shadowOpacity,
   } = activeLayer;
 
   const canvas = document.getElementById(id);
@@ -238,6 +239,7 @@ export const updateText = () => {
     shadowOffsetX,
     shadowOffsetY,
     opacity,
+    shadowOpacity,
   } = activeLayer;
 
   const container = document.getElementById(id);
@@ -252,12 +254,25 @@ export const updateText = () => {
     editable.innerText = content;
   }
 
-  editable.style.filter = `drop-shadow(${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlurSize}px ${shadowColor}) opacity(${opacity})`;
+
+  const convertToRGBA = (color, opacity) => {
+      var aRgbHex = color.match(/.{1,2}/g);
+      var rgba = `${parseInt(aRgbHex[0], 16)}, ${parseInt(aRgbHex[1], 16)}, ${parseInt(aRgbHex[2], 16)}, ${opacity}`;
+      return rgba;
+  }
+
+
+  const shadowWithOpacity = convertToRGBA(shadowColor.substr(1), shadowOpacity); 
+
+
+  editable.style.filter = `drop-shadow(${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlurSize}px rgb(${shadowWithOpacity}) ) opacity(${opacity})`;
   editable.style.lineHeight = lineHeight;
   editable.style.webkitTextStroke = `${strokeSize / 10}px ${strokeColor}`;
   editable.style.fontFamily = fontFamily;
   editable.style.fontSize = `${fontSize}px`;
   editable.style.textAlign = fontOptions[fontOptions.length - 1];
+
+
 
   editable.style.fontWeight = fontOptions.join(' ').includes('bold')
     ? 'bold'

@@ -13,22 +13,22 @@ import {
   unselectAllLayers,
 } from '../libs/canvas.js';
 
-export const strokeSizeInput = document.getElementById('strokeSizeInput');
 export const layerStrokeSizeRange = document.getElementById(
   'layerStrokeSizeRange'
 );
 
-export const layerShadowXInput = document.getElementById('layerShadowXInput');
+export const layerShadowXLabel = document.getElementById('layerShadowXLabel');
 export const layerShadowXRange = document.getElementById('layerShadowXRange');
 
-export const layerShadowYInput = document.getElementById('layerShadowYInput');
+export const layerShadowYLabel = document.getElementById('layerShadowYLabel');
 export const layerShadowYRange = document.getElementById('layerShadowYRange');
 
-export const layerBlurSizeInput = document.getElementById('layerBlurSizeInput');
-export const layerBlurSizeRange = document.getElementById('layerBlurSizeRange');
+export const layerShadowSizeLabel = document.getElementById('layerShadowSizeLabel');
+export const layerShadowSizeRange = document.getElementById('layerShadowSizeRange');
 
-export const layerOpacityInput = document.getElementById('layerOpacityInput');
 export const layerOpacityRange = document.getElementById('layerOpacityRange');
+export const layerOpacityLabel = document.getElementById('layerOpacityLabel');
+
 
 export const layerFontSizeInput = document.getElementById('layerFontSizeInput');
 export const layerFontSizeRange = document.getElementById('layerFontSizeRange');
@@ -56,11 +56,16 @@ const fontFamilySelect = document.getElementById('fontFamilySelect');
 const fontOptionsSection = document.getElementById('fontOptionsSection');
 const fillColorSection = document.getElementById('fillColorSection');
 
-export const layerLineHeightSizeInput = document.getElementById(
-  'layerLineHeightSizeInput'
+const fontOptionsBtn = document.getElementById('fontOptionsBtn');
+const fillOptionsBtn = document.getElementById('fillOptionsBtn');
+const toggleButtonDark = document.querySelectorAll('.toggleButtonDark');
+
+
+export const layerLineHeightLabel = document.getElementById(
+  'layerLineHeightLabel'
 );
-export const layerLineHeightSizeRange = document.getElementById(
-  'layerLineHeightSizeRange'
+export const layerLineHeightRange = document.getElementById(
+  'layerLineHeightRange'
 );
 
 export const fillPickerSwatch = document.getElementById('fillPickerSwatch');
@@ -80,6 +85,13 @@ export const layerStrokeSwatchContainer = document.querySelector(
 export const shadowPickerSwatch = document.getElementById('shadowPickerSwatch');
 export const shadowColorInput = document.getElementById('shadowColorInput');
 
+export const layerShadowOpacityLabel = document.getElementById('layerShadowOpacityLabel');
+export const layerShadowOpacityRange = document.getElementById('layerShadowOpacityRange');
+
+
+
+
+
 export let fillColor = '#419ec7';
 export let strokeColor = '#878787';
 export let shadowColor = '#666666';
@@ -87,6 +99,14 @@ let layerWidth = 100;
 let layerHeight = 100;
 let strokeSize = 0;
 let activeLayerColor = '';
+
+
+toggleButtonDark.forEach((toggleButton)=>{
+  toggleButton.addEventListener('click', ()=>{
+    toggleButton.classList.toggle('invert');
+  })
+  
+})
 
 export const displaySwatches = (element, color, array) => {
   const span = document.createElement('span');
@@ -108,7 +128,7 @@ export const displaySwatches = (element, color, array) => {
     );
 
     if (color === '#none' && array[0] === strokePickerSwatch) {
-      strokeSizeInput.value = 0;
+      strokeSizeRange.value = 0;
     }
     updateLayer(true);
 
@@ -151,10 +171,11 @@ export var fillPicker = new iro.ColorPicker('#fillPicker', {
       },
     },
   ],
-  borderWidth: 2,
-  width: 100, // Set the size of the color picker
+
+  width: 130, // Set the size of the color picker
   color: fillColor, // Set the initial color to pure red
-  handleRadius: 5,
+  handleRadius: 8,
+  layoutDirection : "horizontal",
 });
 
 fillPicker.on('color:change', () => {
@@ -191,10 +212,10 @@ export var strokePicker = new iro.ColorPicker('#strokePicker', {
       },
     },
   ],
-  borderWidth: 2,
-  width: 100, // Set the size of the color picker
+  width: 130, // Set the size of the color picker
   color: strokeColor, // Set the initial color to pure red
-  handleRadius: 5,
+  handleRadius: 8,
+  layoutDirection : "horizontal",
 });
 export let strokeHex = strokePicker.color.hexString; // Currently selected color
 
@@ -232,10 +253,11 @@ export var shadowPicker = new iro.ColorPicker('#shadowPicker', {
       },
     },
   ],
-  borderWidth: 2,
-  width: 100, // Set the size of the color picker
+
+  width: 130, // Set the size of the color picker
   color: shadowColor, // Set the initial color to pure red
-  handleRadius: 5,
+  handleRadius: 8,
+  layoutDirection : "horizontal",
 });
 export let shadowHex = shadowPicker.color.hexString; // Currently selected color
 
@@ -262,8 +284,7 @@ export const setColorToElements = (
   iroColor
 ) => {
   if (iroColor === strokePicker) {
-    if (strokeSizeInput.value === '0') {
-      strokeSizeInput.value = 1;
+    if (layerStrokeSizeRange.value === '0') {
       layerStrokeSizeRange.value = 1;
     }
   }
@@ -274,7 +295,7 @@ export const setColorToElements = (
       iroColor.color.hexString = color;
       //mainCanvasColor = iroColor.color.rgbaString;
       const hex = iroColor.color.hexString;
-      pickerElement.style.backgroundColor = hex;
+      //pickerElement.style.backgroundColor = hex;
       input.value = hex;
     }
   } else {
@@ -284,18 +305,11 @@ export const setColorToElements = (
 };
 
 //Stroke Size Input & Slider
-layerStrokeSizeRange.addEventListener('mousemove', () => {
-  if (strokeSizeInput.value != layerStrokeSizeRange.value) {
-    strokeSizeInput.value = layerStrokeSizeRange.value;
-    updateLayer();
-  }
+layerStrokeSizeRange.addEventListener('input', () => {
+  layerStrokeSizeLabel.innerHTML = layerStrokeSizeRange.value;
+  updateLayer();
 });
 
-strokeSizeInput.addEventListener('click', (e) => {
-  closeDialogues();
-  layerStrokeSizeRange.parentElement.style.display = 'block';
-  e.stopPropagation();
-});
 
 //    Save To History
 layerStrokeSizeRange.addEventListener('mouseup', () => {
@@ -303,106 +317,81 @@ layerStrokeSizeRange.addEventListener('mouseup', () => {
 });
 
 //Shadow Blur Size Input & Slider
-layerBlurSizeRange.addEventListener('mousemove', () => {
-  if (layerBlurSizeInput.value != layerBlurSizeRange.value) {
-    layerBlurSizeInput.value = layerBlurSizeRange.value;
+layerShadowSizeRange.addEventListener('input', () => {
+
+    layerShadowSizeLabel.innerHTML = layerShadowSizeRange.value;
     updateLayer();
-  }
+
 });
 
-layerBlurSizeInput.addEventListener('click', (e) => {
-  closeDialogues();
-  layerBlurSizeRange.parentElement.style.display = 'block';
-  e.stopPropagation();
-});
 
 //    Save To History
-layerBlurSizeRange.addEventListener('mouseup', () => {
+layerShadowSizeRange.addEventListener('mouseup', () => {
   updateLayer(true);
 });
 
 // Shadow X Y Position
 
-layerShadowXRange.addEventListener('mousemove', () => {
-  if (layerShadowXInput.value != layerShadowXRange.value) {
-    layerShadowXInput.value = layerShadowXRange.value;
+layerShadowXRange.addEventListener('input', () => {
+
+    layerShadowXLabel.innerHTML = layerShadowXRange.value;
     updateLayer();
-  }
+
 });
 
-layerShadowXInput.addEventListener('click', (e) => {
-  closeDialogues();
-  layerShadowXRange.parentElement.style.display = 'block';
-  e.stopPropagation();
-});
+
 
 //    Save To History
 layerShadowXRange.addEventListener('mouseup', () => {
   updateLayer(true);
 });
 
-layerShadowYRange.addEventListener('mousemove', () => {
-  if (layerShadowYInput.value != layerShadowYRange.value) {
-    layerShadowYInput.value = layerShadowYRange.value;
+layerShadowYRange.addEventListener('input', () => {
+    layerShadowYLabel.innerHTML = layerShadowYRange.value;
     updateLayer();
-  }
 });
 
-layerShadowYInput.addEventListener('click', (e) => {
-  closeDialogues();
-  layerShadowYRange.parentElement.style.display = 'block';
-  e.stopPropagation();
-});
+
 
 //    Save To History
 layerShadowYRange.addEventListener('mouseup', () => {
   updateLayer(true);
 });
 
-//Font Size Input & Slider
-// layerFontSizeRange.addEventListener('mousemove', () => {
-//   if (layerFontSizeInput.value != layerFontSizeRange.value) {
-//     layerFontSizeInput.value = layerFontSizeRange.value;
-//     updateLayer();
-//   }
-// });
 
-// layerFontSizeInput.addEventListener('click', (e) => {
-//   closeDialogues();
-//   layerFontSizeRange.parentElement.style.display = 'block';
-//   e.stopPropagation();
-// });
 
-// //    Save To History
-// layerFontSizeRange.addEventListener('mouseup', () => {
-//   updateLayer(true);
-// });
+// Layer Shadow Opacity
 
-//Line Height Input & Slider
-layerLineHeightSizeRange.addEventListener('mousemove', () => {
-  if (layerLineHeightSizeInput.value != layerLineHeightSizeRange.value) {
-    layerLineHeightSizeInput.value = layerLineHeightSizeRange.value;
-    updateLayer();
-  }
+layerShadowOpacityRange.addEventListener('input', () => {
+  layerShadowOpacityLabel.innerHTML = layerShadowOpacityRange.value;
+  updateLayer();
 });
 
-layerLineHeightSizeInput.addEventListener('click', (e) => {
-  closeDialogues();
-  layerLineHeightSizeRange.parentElement.style.display = 'block';
-  e.stopPropagation();
-});
+
 
 //    Save To History
-layerLineHeightSizeRange.addEventListener('mouseup', () => {
+layerShadowOpacityRange.addEventListener('mouseup', () => {
+updateLayer(true);
+});
+
+
+//Line Height Input & Slider
+layerLineHeightRange.addEventListener('input', () => {
+  layerLineHeightLabel.innerHTML = layerLineHeightRange.value;
+  updateLayer();
+});
+
+
+
+//    Save To History
+layerLineHeightRange.addEventListener('mouseup', () => {
   updateLayer(true);
 });
 
 //Opacity Input & Slider
-layerOpacityRange.addEventListener('mousemove', () => {
-  if (layerOpacityInput.value != layerOpacityRange.value) {
-    layerOpacityInput.value = layerOpacityRange.value;
-    updateLayer();
-  }
+layerOpacityRange.addEventListener('input', () => {
+  layerOpacityLabel.innerHTML = layerOpacityRange.value;
+  updateLayer();
 });
 
 //    Save To History
@@ -412,31 +401,31 @@ layerOpacityRange.addEventListener('mouseup', () => {
 
 //Layer Width Input & Slider
 
-layerWidthRange.addEventListener('mousemove', () => {
-  if (layerWidthInput.value != layerWidthRange.value) {
-    layerWidthInput.value = layerWidthRange.value;
-  }
-});
+// layerWidthRange.addEventListener('mousemove', () => {
+//   if (layerWidthInput.value != layerWidthRange.value) {
+//     layerWidthInput.value = layerWidthRange.value;
+//   }
+// });
 
-layerWidthInput.addEventListener('click', (e) => {
-  closeDialogues();
-  layerWidthRange.parentElement.style.display = 'block';
-  e.stopPropagation();
-});
+// layerWidthInput.addEventListener('click', (e) => {
+//   closeDialogues();
+//   layerWidthRange.parentElement.style.display = 'block';
+//   e.stopPropagation();
+// });
 
 //Layer Height Input & Slider
 
-layerHeightRange.addEventListener('mousemove', () => {
-  if (layerHeightInput.value != layerHeightRange.value) {
-    layerHeightInput.value = layerHeightRange.value;
-  }
-});
+// layerHeightRange.addEventListener('mousemove', () => {
+//   if (layerHeightInput.value != layerHeightRange.value) {
+//     layerHeightInput.value = layerHeightRange.value;
+//   }
+// });
 
-layerHeightInput.addEventListener('click', (e) => {
-  closeDialogues();
-  layerHeightRange.parentElement.style.display = 'block';
-  e.stopPropagation();
-});
+// layerHeightInput.addEventListener('click', (e) => {
+//   closeDialogues();
+//   layerHeightRange.parentElement.style.display = 'block';
+//   e.stopPropagation();
+// });
 
 //Binding Font Options Buttons
 
@@ -461,7 +450,7 @@ textAlignmentOptions.forEach((option) => {
 
 //////INITIALISATION
 
-layerStrokeSizeRange.value = strokeSizeInput.value = strokeSize;
+layerStrokeSizeRange.value  = strokeSize;
 
 getInitOptions.then((data) => {
   data.swatchColors.map((color) => {
@@ -479,7 +468,15 @@ getInitOptions.then((data) => {
   });
 });
 
-setColorToElements(fillColor, fillPickerSwatch, fillColorInput, fillPicker);
+
+
+setColorToElements(
+  fillColor, 
+  fillPickerSwatch, 
+  fillColorInput, 
+  fillPicker
+  );
+
 setColorToElements(
   strokeColor,
   strokePickerSwatch,
@@ -498,24 +495,24 @@ setColorToElements(
 export const layerListItemBind = () => {
   layerList = document.querySelectorAll('.layerList>li');
   layerList.forEach((layer) => {
-    layer.addEventListener('click', (event) => {
+    layer.addEventListener('click', (e) => {
       if (document.querySelector('.activeLayerInLayerList')) {
         document
           .querySelector('.activeLayerInLayerList')
           .classList.remove('activeLayerInLayerList');
       }
       // if a click was on a layer name
-      if (event.srcElement.nodeName === 'LI') {
+      if (e.target.nodeName === 'LI') {
         unselectAllLayers(false);
         // Highlight layer List Item
 
-        event.srcElement.classList.add('activeLayerInLayerList');
+        e.target.classList.add('activeLayerInLayerList');
         // Make Layer Active
 
-        makeActive(event.srcElement.id.replace(/layerListItem/g, ''), false);
+        makeActive(e.target.id.replace(/layerListItem/g, ''), false);
       } else {
         //Otherwise remove it (X - button pressed)
-        event.srcElement.parentElement.style.display = 'none';
+        e.target.parentElement.style.display = 'none';
       }
     });
     layer.addEventListener('mouseover', (event) => {});
@@ -524,13 +521,13 @@ export const layerListItemBind = () => {
 
 // X Position Input on Input
 
-xPos.addEventListener('change', (e) => {
-  moveLayerTo(xPos.value, yPos.value);
-});
+// xPos.addEventListener('change', (e) => {
+//   moveLayerTo(xPos.value, yPos.value);
+// });
 
-yPos.addEventListener('change', (e) => {
-  moveLayerTo(xPos.value, yPos.value);
-});
+// yPos.addEventListener('change', (e) => {
+//   moveLayerTo(xPos.value, yPos.value);
+// });
 
 textContentInput.addEventListener('keyup', (e) => {
   activeLayer.content = textContentInput.value;
@@ -546,11 +543,12 @@ export const updateLayer = (SAVE_TO_HISTORY = false) => {
     activeLayer.color = fillColorInput.value;
     activeLayer.strokeColor = strokePicker.color.hexString;
     activeLayer.shadowColor = shadowPicker.color.hexString;
-    activeLayer.strokeSize = parseFloat(strokeSizeInput.value);
-    activeLayer.shadowBlurSize = layerBlurSizeInput.value;
-    activeLayer.shadowOffsetX = layerShadowXInput.value;
-    activeLayer.shadowOffsetY = layerShadowYInput.value;
-    activeLayer.opacity = layerOpacityInput.value / 10;
+    activeLayer.strokeSize = layerStrokeSizeRange.value;
+    activeLayer.shadowBlurSize = layerShadowSizeRange.value;
+    activeLayer.shadowOffsetX = layerShadowXRange.value;
+    activeLayer.shadowOffsetY = layerShadowYRange.value;
+    activeLayer.opacity = layerOpacityRange.value ;
+    activeLayer.shadowOpacity = layerShadowOpacityRange.value ;
 
     // Text & QR Specific Options
     if (
@@ -559,7 +557,7 @@ export const updateLayer = (SAVE_TO_HISTORY = false) => {
     ) {
       textContentInput.value = activeLayer.content;
       // activeLayer.fontSize = parseInt(layerFontSizeInput.value);
-      activeLayer.lineHeight = layerLineHeightSizeInput.value;
+      activeLayer.lineHeight = layerLineHeightRange.value;
       activeLayer.fontFamily = fontFamilySelect.selectedOptions[0].label;
       let activeFontOptions = document.querySelectorAll(
         '.fontOptions>li.active'
@@ -577,21 +575,9 @@ export const updateLayer = (SAVE_TO_HISTORY = false) => {
         `layerListItem${activeLayer.id}`
       );
 
-      layerListItem.childNodes[0].textContent = content;
-      // const replaceText = layerListItem.innerHTML.slice(
-      //   0,
-      //   layerListItem.innerHTML.indexOf('<span')
-      // );
-      // console.table(layerListItem.childNodes[0].textContent);
-
-      // const innerHTML = layerListItem.innerHTML.replace(replaceText, content);
-      // layerListItem.innerHTML = innerHTML;
-      // Change layer label text
-      const layerLabel = document.getElementById(`layerLabel`);
-
+      layerListItem.childNodes[1].nodeValue = content;
       activeLayer.fileName = activeLayer.contentType != 'text' ? content : '';
-      layerLabel.innerHTML = activeLayer.fileName;
-      //------------------------------------
+
     }
 
     applyChangesToLayer(SAVE_TO_HISTORY);
@@ -603,31 +589,33 @@ export const updateLayer = (SAVE_TO_HISTORY = false) => {
 };
 
 export const updateLayerOptionValues = (id) => {
-  fontOptionsSection.style.display = 'none';
-  fillColorSection.style.display = 'none';
+  // fontOptionsSection.style.display = 'none';
+  // fillColorSection.style.display = 'none';
+  fontOptionsBtn.disabled = 'true';
+  fillOptionsBtn.disabled = 'true';
+  
+  
 
-  xPos.value = activeLayer.left;
-  yPos.value = activeLayer.top;
-  layerWidthRange.value = parseInt(activeLayer.width);
-  layerHeightRange.value = parseInt(activeLayer.height);
-  strokeSizeInput.value = activeLayer.strokeSize;
+  // xPos.value = activeLayer.left;
+  // yPos.value = activeLayer.top;
+  // layerWidthRange.value = parseInt(activeLayer.width);
+  // layerHeightRange.value = parseInt(activeLayer.height);
   layerStrokeSizeRange.value = activeLayer.strokeSize;
-  layerBlurSizeInput.value = activeLayer.shadowBlurSize;
-  layerBlurSizeRange.value = activeLayer.shadowBlurSize;
-  layerShadowXInput.value = activeLayer.shadowOffsetX;
+  layerShadowSizeRange.value = activeLayer.shadowBlurSize;
   layerShadowXRange.value = activeLayer.shadowOffsetX;
-  layerShadowYInput.value = activeLayer.shadowOffsetY;
   layerShadowYRange.value = activeLayer.shadowOffsetY;
-  layerOpacityInput.value = activeLayer.opacity * 10;
-  layerOpacityRange.value = activeLayer.opacity * 10;
+  layerOpacityRange.value = activeLayer.opacity ;
+  layerShadowOpacityRange.value = activeLayer.shadowOpacity ;
+
+
 
   //Text specific Layer Options
   if (activeLayer.contentType === 'text' || activeLayer.contentType === 'qr') {
     textContentInput.value = activeLayer.content;
     //layerFontSizeInput.value = activeLayer.fontSize;
     //layerFontSizeRange.value = activeLayer.fontSize;
-    layerLineHeightSizeInput.value = activeLayer.lineHeight;
-    layerLineHeightSizeRange.value = activeLayer.lineHeight;
+    layerLineHeightLabel.innerHTML = activeLayer.lineHeight;
+    layerLineHeightRange.value = activeLayer.lineHeight;
 
     document.querySelectorAll('#fontFamilySelect>option').forEach((option) => {
       if (option.text === activeLayer.fontFamily) option.selected = 'selected';
@@ -642,18 +630,27 @@ export const updateLayerOptionValues = (id) => {
       document.querySelector(`[data-property=${option}]`).className = 'active';
     });
 
-    layerWidthInput.disabled = true;
-    layerWidthInput.value = activeLayer.width;
-    layerHeightInput.disabled = true;
-    layerHeightInput.value = activeLayer.height;
+    // layerWidthInput.disabled = true;
+    // layerWidthInput.value = activeLayer.width;
+    // layerHeightInput.disabled = true;
+    // layerHeightInput.value = activeLayer.height;
 
-    fontOptionsSection.style.display = 'block';
-    fillColorSection.style.display = 'block';
+    // fontOptionsSection.style.display = 'block';
+    // fillColorSection.style.display = 'block';
+
+
+
+
+    fontOptionsBtn.removeAttribute('disabled');
+    fillOptionsBtn.removeAttribute('disabled');
+
   }
 
   //Icon Specific options
   if (activeLayer.contentType === 'shape') {
-    fillColorSection.style.display = 'block';
+    
+    fontOptionsBtn.removeAttribute('disabled');
+    fillOptionsBtn.removeAttribute('disabled');
 
     // TODO create color map for svg image with option to change colors
     // /////////////////

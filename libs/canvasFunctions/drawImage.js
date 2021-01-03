@@ -17,12 +17,25 @@ export const updateImage = () => {
     shadowBlurSize,
     shadowOffsetX,
     shadowOffsetY,
+    shadowOpacity
   } = activeLayer;
 
   const container = document.getElementById(id);
   const img = container.firstChild;
 
-  img.style.filter = `drop-shadow(${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlurSize}px ${shadowColor}) opacity(${opacity})`;
+  const convertToRGBA = (color, opacity) => {
+    var aRgbHex = color.match(/.{1,2}/g);
+    var rgba = `${parseInt(aRgbHex[0], 16)}, ${parseInt(aRgbHex[1], 16)}, ${parseInt(aRgbHex[2], 16)}, ${opacity}`;
+    return rgba;
+}
+
+
+const shadowWithOpacity = convertToRGBA(shadowColor.substr(1), shadowOpacity); 
+
+
+
+
+  img.style.filter = `drop-shadow(${shadowOffsetX}px ${shadowOffsetY}px ${shadowBlurSize}px rgb(${shadowWithOpacity}) ) opacity(${opacity})`;
   img.style.outline = `solid ${strokeSize}px ${strokeColor}`;
 };
 

@@ -10,7 +10,7 @@ import { bgHex } from '../../../modules/drawingArea.js';
 import { setColor, setSize } from '../../drawingArea.js';
 import { closeDialogues } from '../../../ui-interactions.js';
 
-const templateContainer = document.getElementById('templateContainer');
+const templatesContainer = document.getElementById('templatesContainer');
 const saveTemplateButton = document.getElementById('saveTemplateButton');
 
 const mainCanvas = document.getElementById('mainCanvas');
@@ -18,14 +18,17 @@ const templateTagsInput = document.getElementById('templateTagsInput');
 const mainCtx = mainCanvas.getContext('2d');
 const mainCanvasContainer = document.getElementById('mainCanvasContainer');
 
+const templatesSection = document.getElementById('templatesSection');
+
+
 saveTemplateButton.addEventListener('click', () => {
   saveTemplate();
 });
 
 const saveTemplate = () => {
-  removeLayerLabels();
+  // removeLayerLabels();
   unselectAllLayers();
-  closeDialogues();
+  // closeDialogues();
 
   let fontsToRender = '';
   layers.map((layer) => {
@@ -98,8 +101,8 @@ const saveTemplate = () => {
                 })
                 .then(function (response) {
                   loadTemplateImage(
-                    `${location.href}/templates/${fileName}.png`,
-                    templateContainer
+                    `${location.origin}/templates/${fileName}.png`,
+                    templatesContainer
                   );
                 });
 
@@ -123,15 +126,21 @@ const saveTemplate = () => {
 };
 
 const loadTemplateImage = (src, container) => {
+
+
   const img = new Image();
   img.crossOrigin = 'anonymous';
+
   img.onload = function () {
+
     img.addEventListener('click', (e) => {
       loadTemplate(src);
     });
-    const li = document.createElement('LI');
-    li.appendChild(img);
-    container.appendChild(li);
+    const div = document.createElement('DIV');
+    div.appendChild(img);  
+
+    // Add Image to the smallest Column
+    smallestCol(container).appendChild(div);
   };
   img.src = src;
 };
@@ -171,23 +180,29 @@ export const loadTemplate = (url) => {
 };
 
 templateTagsInput.addEventListener('keypress', (e) => {
+  
   if (e.key === 'Enter') {
-    templateContainer.innerHTML = '';
+
+    templatesContainer.querySelectorAll('div').forEach(div => {
+      div.innerHTML = '';
+    })
 
     fetch('getTemplateList.php', {
       method: 'GET',
     })
       .then((response) => response.json())
       .then((data) => {
+       
         data.map((template) => {
           if (
             template
               .toLowerCase()
               .includes(templateTagsInput.value.toLowerCase())
           ) {
+            
             loadTemplateImage(
-              `${location.href}/${template}`,
-              templateContainer
+              `${location.origin}/${template}`,
+              templatesContainer
             );
           }
         });
@@ -197,5 +212,13 @@ templateTagsInput.addEventListener('keypress', (e) => {
       });
   }
 });
+
+const smallestCol = (container) => {
+  const cols = [ ...container.children];
+  return cols.reduce((firstCol, col) => {
+    return col.clientHeight < firstCol.clientHeight ? col : firstCol;
+  }, cols[0])
+}
+
 
 //loadTemplate('https://site.test/SignDesigner//templates/all HUyzN.png');

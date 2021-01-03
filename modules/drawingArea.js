@@ -17,17 +17,14 @@ export const setColor = (canvas, color) => {
   setColorToElements(
     color,
     mainCanvas,
-    bgFillPickerSwatch,
+    //bgFillPickerSwatch,
     canvasColorInput,
     bgColorPicker
   );
 };
 
 export const setSize = (canvas, width, height) => {
-  // const box = document
-  //   .getElementById('mainCanvasContainer')
-  //   .getBoundingClientRect();
-  // console.table(box);
+
   //Force value to be a number or 1
   width = parseFloat(width) || 1;
   height = parseFloat(height) || 1;
@@ -35,8 +32,8 @@ export const setSize = (canvas, width, height) => {
   width = width > 2000 ? 2000 : width;
   height = height > 2000 ? 2000 : height;
 
-  canvas.parentElement.width = canvas.width = canvasWidthInput.value = canvasWidthRange.value = width;
-  canvas.parentElement.height = canvas.height = canvasHeightInput.value = canvasHeightRange.value = height;
+  canvas.parentElement.width = canvas.width = pageWidthLabel.innerHTML = pageWidthRange.value = width;
+  canvas.parentElement.height = canvas.height = pageHeightLabel.innerHTML = pageHeightRange.value = height;
   drawingAreaContainer.style.width = `${width}px`;
 
   //Align Canvas in the center
@@ -51,18 +48,14 @@ export const setSize = (canvas, width, height) => {
   left = left < 0 ? 0 : left;
   top = top < 0 ? 0 : top;
 
-  //drawingAreaContainer.style.left = `${left}px`;
-  //drawingAreaContainer.style.top = `${top}px`;
+
 
   mainCanvasBorder.style.width = `${width}px`;
   mainCanvasBorder.style.height = `${height}px`;
 
-  //mainCanvasBorder.style.top = `30px`;
+  
 
-  document.querySelector('.dialogueWidthLabel').innerHTML =
-    canvasWidthRange.value;
-  document.querySelector('.dialogueHeightLabel').innerHTML =
-    canvasHeightRange.value;
+
 };
 
 //------------------------------
@@ -84,10 +77,10 @@ export var bgColorPicker = new iro.ColorPicker('#bgFillPicker', {
       },
     },
   ],
-  borderWidth: 2,
-  width: 100, // Set the size of the color picker
+  width: 130, // Set the size of the color picker
   color: mainCanvasColor, // Set the initial color to pure red
-  handleRadius: 5,
+  handleRadius: 8,
+  layoutDirection : "horizontal",
 });
 export let bgHex = bgColorPicker.color.hexString; // Currently selected color
 
@@ -95,7 +88,7 @@ bgColorPicker.on('color:change', () => {
   setColorToElements(
     bgColorPicker.color.hexString,
     mainCanvas,
-    bgFillPickerSwatch,
+    //bgFillPickerSwatch,
     canvasColorInput,
     bgColorPicker
   );
@@ -104,7 +97,7 @@ bgColorPicker.on('color:change', () => {
 export const setColorToElements = (
   color,
   canvas,
-  pickerElement,
+  //pickerElement,
   input,
   iroColor
 ) => {
@@ -113,7 +106,7 @@ export const setColorToElements = (
     iroColor.color.hexString = color;
     mainCanvasColor = iroColor.color.rgbaString;
     bgHex = iroColor.color.hexString;
-    pickerElement.style.backgroundColor = bgHex;
+    //pickerElement.style.backgroundColor = bgHex;
     input.value = bgHex;
     setColor(canvas, mainCanvasColor);
   }
@@ -122,8 +115,11 @@ export const setColorToElements = (
 const drawingArea = document.querySelector('.drawingArea');
 
 drawingArea.addEventListener('mousedown', (e) => {
-  const sourceClass = e.srcElement.className;
-  // Unselect layers when clicked on empty space
-  if (sourceClass === 'mainCanvas' || sourceClass === 'drawingArea')
+
+  const sourceClass = e.target.closest('div').className;
+
+
+  // Unselect layers when clicked on e.mpty space
+  if (sourceClass.includes('mainCanvas') || sourceClass.includes('drawingArea'))
     unselectAllLayers();
 });

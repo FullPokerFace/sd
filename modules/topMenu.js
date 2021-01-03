@@ -255,8 +255,8 @@ export const alignLayer = (alignment) => {
     const container = document
       .getElementById(activeLayer.id)
       .getBoundingClientRect();
-    const tools = document.querySelector('.tools').getBoundingClientRect();
-    const topMenu = document.querySelector('.topMenu').getBoundingClientRect();
+    //const tools = document.querySelector('.tools').getBoundingClientRect();
+    //const topMenu = document.querySelector('.topMenu').getBoundingClientRect();
     if (activeLayer) {
       switch (alignment) {
         ///
@@ -264,7 +264,8 @@ export const alignLayer = (alignment) => {
           if (Math.floor(container.left) != Math.floor(mainCanvasRect.left)) {
             moveable.request(
               'draggable',
-              { x: mainCanvasRect.left - tools.width },
+              // { x: mainCanvasRect.left - tools.width },
+              { x: mainCanvasRect.left  },
               true
             );
           } else {
@@ -277,7 +278,8 @@ export const alignLayer = (alignment) => {
           if (Math.floor(container.top) != Math.floor(mainCanvasRect.top)) {
             moveable.request(
               'draggable',
-              { y: mainCanvasRect.top - topMenu.height },
+              // { y: mainCanvasRect.top - topMenu.height },
+              { y: mainCanvasRect.top },
               true
             );
           } else {
@@ -291,7 +293,8 @@ export const alignLayer = (alignment) => {
           if (Math.floor(container.right) != Math.floor(mainCanvasRect.right)) {
             moveable.request(
               'draggable',
-              { x: mainCanvasRect.right - container.width - tools.width },
+              // { x: mainCanvasRect.right - container.width - tools.width },
+              { x: mainCanvasRect.right - container.width },
               true
             );
           } else {
@@ -307,7 +310,8 @@ export const alignLayer = (alignment) => {
           ) {
             moveable.request(
               'draggable',
-              { y: mainCanvasRect.bottom - container.height - topMenu.height },
+              // { y: mainCanvasRect.bottom - container.height - topMenu.height },
+              { y: mainCanvasRect.bottom - container.height },
               true
             );
           } else {
@@ -321,20 +325,24 @@ export const alignLayer = (alignment) => {
           const x = (
             mainCanvasRect.left +
             mainCanvasRect.width / 2 -
-            container.width / 2 -
-            tools.width
+            container.width / 2 
+            //- tools.width
           ).toFixed(0);
           const y = (
             mainCanvasRect.top +
             mainCanvasRect.height / 2 -
-            container.height / 2 -
-            topMenu.height
+            container.height / 2 
+            //- topMenu.height
           ).toFixed(0);
 
           //    If not in the middle already
           if (
-            container.left.toFixed(0) - tools.width != x &&
-            container.top.toFixed(0) - topMenu.height != y
+            container.left.toFixed(0) 
+            //- tools.width 
+            != x &&
+            container.top.toFixed(0) 
+            //- topMenu.height 
+            != y
           ) {
             moveable.request(
               'draggable',

@@ -1,6 +1,6 @@
 import { makeId } from '../../../libs/makeId.js';
 import {
-  createLayer,
+
   drawCanvas,
   makeActive,
   fitToPage,
