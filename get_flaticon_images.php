@@ -35,7 +35,7 @@ function getAccessToken()
     CURLOPT_TIMEOUT => 30,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => "POST",
-    CURLOPT_POSTFIELDS => "apikey=6f62f8c8ed2f45eab29ac3db296515668e60090c",
+    CURLOPT_POSTFIELDS => "API_KEY",
     CURLOPT_HTTPHEADER => array(
       "accept: application/json",
       "cache-control: no-cache",
