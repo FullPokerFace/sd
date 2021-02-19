@@ -3,7 +3,7 @@
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
-  CURLOPT_URL => "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBwNG5tyqOuXWs-QFMEcM10AxxEV1aKoYk&sort=popularity",
+  CURLOPT_URL => "API_KEY",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
