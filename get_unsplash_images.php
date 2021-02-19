@@ -3,7 +3,7 @@
 $q = $_POST['q'];
 $limit = $_POST['limit'];
 $page = $_POST['page'];
-$client_id = 'wOlrjf0v1ywd2962qij1dVyUVQ76IpbnzWC5ZR5aFf0';
+$client_id = 'API_KEY';
 
 function getImagesS($client_id, $q, $page, $limit)
 {
